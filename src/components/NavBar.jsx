@@ -2,7 +2,7 @@ import { Nav, Container, Button } from "react-bootstrap";
 
 import Navbar from "react-bootstrap/Navbar";
 
-const NavBar = () => {
+const NavBar = ({ onHandleClick }) => {
   return (
     <Navbar expand="lg" className="bg-black">
       <Container className="d-flex flex-row justify-content-evenly ">
@@ -17,7 +17,9 @@ const NavBar = () => {
             About
           </Nav.Link>
         </Nav>
-        <Button variant="dark">Cart 0</Button>
+        <Button variant="light" onClick={onHandleClick}>
+          Cart 0
+        </Button>
       </Container>
     </Navbar>
   );

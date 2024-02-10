@@ -1,7 +1,9 @@
+import { useState } from "react";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import NavBar from "./components/NavBar";
 import ProductList from "./components/ProductList";
+import Cart from "./components/Cart";
 
 const productsArr = [
   {
@@ -38,12 +40,18 @@ const productsArr = [
 ];
 
 function App() {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   return (
     <>
-      <NavBar />
+      <NavBar onHandleClick={handleShow} />
       <Header />
       <ProductList products={productsArr} />
       <Footer />
+      {show && <Cart show={show} onHandleClose={handleClose} />}
     </>
   );
 }
