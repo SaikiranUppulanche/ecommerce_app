@@ -1,38 +1,14 @@
+import { useContext } from "react";
 import { Button, Card, CloseButton, Image, Modal } from "react-bootstrap";
-
-const cartElements = [
-  {
-    title: "Colors",
-
-    price: 100,
-
-    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%201.png",
-
-    quantity: 2,
-  },
-
-  {
-    title: "Black and white Colors",
-
-    price: 50,
-
-    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%202.png",
-
-    quantity: 3,
-  },
-
-  {
-    title: "Yellow and Black Colors",
-
-    price: 70,
-
-    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%203.png",
-
-    quantity: 1,
-  },
-];
+import { CartContext } from "./context/CartContext";
 
 const Cart = ({ show, onHandleClose }) => {
+  const cartCtx = useContext(CartContext);
+
+  const totalAmount = cartCtx.cartItem.reduce((acc, cur) => {
+    return cur.price * cur.quantity + acc;
+  }, 0);
+
   return (
     <Card className="border border-danger">
       <Modal show={show}>
@@ -53,9 +29,9 @@ const Cart = ({ show, onHandleClose }) => {
             <span className="ms-4">Price</span>
             <span>Quantity</span>
           </div>
-          {cartElements.map((item) => {
+          {cartCtx.cartItem.map((item) => {
             return (
-              <div
+              <li
                 className=" container px-5 fw-medium d-flex flex-row justify-content-between"
                 key={Math.random()}
               >
@@ -76,13 +52,21 @@ const Cart = ({ show, onHandleClose }) => {
                     className="text-center me-3"
                     style={{ width: "30px", height: "30px" }}
                     value={item.quantity}
+                    readOnly
                   />
                   <Button variant="danger">Remove</Button>
                 </div>
-              </div>
+              </li>
             );
           })}
         </Card.Body>
+        <div className="d-flex flex-row justify-content-between p-5">
+          <h3>Total Amount</h3>
+          <h3>{totalAmount}</h3>
+        </div>
+        <Button className="mx-5 mb-5 " variant="primary" size="lg">
+          Purchase
+        </Button>
       </Modal>
     </Card>
   );

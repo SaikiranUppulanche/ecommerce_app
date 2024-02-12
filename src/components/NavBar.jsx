@@ -1,8 +1,14 @@
+import { useContext } from "react";
 import { Nav, Container, Button } from "react-bootstrap";
 
 import Navbar from "react-bootstrap/Navbar";
+import { CartContext } from "./context/CartContext";
 
 const NavBar = ({ onHandleClick }) => {
+  const cartCtx = useContext(CartContext);
+
+  const numberOfItems = cartCtx.cartItem.length;
+
   return (
     <Navbar expand="lg" className="bg-black">
       <Container className="d-flex flex-row justify-content-evenly ">
@@ -17,8 +23,13 @@ const NavBar = ({ onHandleClick }) => {
             About
           </Nav.Link>
         </Nav>
-        <Button variant="light" onClick={onHandleClick}>
-          Cart 0
+        <Button
+          className="d-flex flex-row "
+          variant="light"
+          onClick={onHandleClick}
+        >
+          <h4 className="pt-1 pe-2">Cart</h4>{" "}
+          <Button variant="success">{numberOfItems}</Button>
         </Button>
       </Container>
     </Navbar>
