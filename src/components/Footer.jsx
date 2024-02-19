@@ -5,7 +5,7 @@ import spotify from "../assets/spotify.png";
 
 const Footer = () => {
   return (
-    <Navbar expand="lg" className="bg-info">
+    <Navbar expand="lg" className="bg-info py-3 ">
       <Container className="d-flex flex-row px-5 justify-content-between ">
         <h1 className="text-white">The Store</h1>
         <Nav className="fs-3">
