@@ -1,12 +1,6 @@
-import Footer from "../components/Footer";
-import Header from "../components/Header";
-import NavBar from "../components/NavBar";
-
 const AboutPage = () => {
   return (
     <>
-      <NavBar />
-      <Header />
       <h3 className="text-center my-5">About</h3>
       <p className=" p-5 m-5">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita animi
@@ -49,7 +43,6 @@ const AboutPage = () => {
         blanditiis odio accusantium id. Recusandae veritatis enim, rerum aliquam
         saepe deleniti.
       </p>
-      <Footer />
     </>
   );
 };
