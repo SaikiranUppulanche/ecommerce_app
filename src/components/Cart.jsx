@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Button, Card, CloseButton, Image, Modal } from "react-bootstrap";
-import { CartContext } from "./context/CartContext";
+import { CartContext } from "../context/CartContext";
 
 const Cart = ({ show, onHandleClose }) => {
   const cartCtx = useContext(CartContext);

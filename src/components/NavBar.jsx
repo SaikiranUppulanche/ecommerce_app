@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { Nav, Container, Button } from "react-bootstrap";
 
 import Navbar from "react-bootstrap/Navbar";
-import { CartContext } from "./context/CartContext";
+import { CartContext } from "../context/CartContext";
 import { NavLink } from "react-router-dom";
 import Cart from "./Cart";
 
@@ -28,6 +28,9 @@ const NavBar = () => {
             </NavLink>
             <NavLink to="/about" className="text-white px-5">
               About
+            </NavLink>
+            <NavLink to="/contact" className="text-white px-5">
+              Contact Us
             </NavLink>
           </Nav>
           <Button
