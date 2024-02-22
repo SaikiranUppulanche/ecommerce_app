@@ -24,6 +24,10 @@ const ContactForm = () => {
       }
     );
     if (!res.ok) return;
+
+    inputNameRef.current.value = "";
+    inputEmailRef.current.value = "";
+    inputPhoneRef.current.value = "";
   };
 
   return (
@@ -35,18 +39,22 @@ const ContactForm = () => {
         className="m-5 py-1"
       >
         <Card.Body>
-          <Form>
+          <Form onSubmit={handleSubmitData}>
             <Form.Group className="mb-3" controlId="formGroupEmail">
               <Form.Label className="fw-medium">Name</Form.Label>
               <Form.Control
+                required
                 ref={inputNameRef}
                 type="text"
                 placeholder="Enter name"
               />
             </Form.Group>
+
             <Form.Group className="mb-3" controlId="formGroupEmail">
               <Form.Label className="fw-medium">Email address</Form.Label>
+
               <Form.Control
+                required
                 ref={inputEmailRef}
                 type="email"
                 placeholder="Enter email"
@@ -55,12 +63,14 @@ const ContactForm = () => {
             <Form.Group className="mb-3" controlId="formGroupPassword">
               <Form.Label className="fw-medium">Phone Number</Form.Label>
               <Form.Control
+                required
                 ref={inputPhoneRef}
                 type="tel"
+                maxLength={10}
                 placeholder="Enter Phone Number"
               />
             </Form.Group>
-            <Button onClick={handleSubmitData} variant="primary" type="submit">
+            <Button variant="primary" type="submit">
               Submit
             </Button>
           </Form>

@@ -17,7 +17,7 @@ const NavBar = () => {
 
   return (
     <>
-      <Navbar expand="lg" className="bg-black">
+      <Navbar sticky="top" expand="lg" className="bg-black">
         <Container className="d-flex flex-row justify-content-between ">
           <Nav className="fs-3">
             <NavLink to="/" className="text-white px-5">
