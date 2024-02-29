@@ -7,6 +7,7 @@ import RootLayout from "./pages/RootLayout";
 import ContactPage from "./pages/ContactPage";
 import Products from "./pages/Products";
 import ProductDetails from "./pages/ProductDetails";
+import Login from "./pages/Login";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
           { index: true, element: <Products /> },
           { path: "/store/:id", element: <ProductDetails /> },
         ],
+      },
+      {
+        path: "/login",
+        element: <Login />,
       },
       {
         path: "/contact",

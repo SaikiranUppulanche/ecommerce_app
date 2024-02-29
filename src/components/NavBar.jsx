@@ -20,16 +20,19 @@ const NavBar = () => {
       <Navbar sticky="top" expand="lg" className="bg-black">
         <Container className="d-flex flex-row justify-content-between ">
           <Nav className="fs-3">
-            <NavLink to="/" className="text-white px-5">
+            <NavLink to="/" className="text-white px-3">
               Home
             </NavLink>
-            <NavLink to="/store" className="text-white px-5">
+            <NavLink to="/store" className="text-white px-3">
               Store
             </NavLink>
-            <NavLink to="/about" className="text-white px-5">
+            <NavLink to="/about" className="text-white px-3">
               About
             </NavLink>
-            <NavLink to="/contact" className="text-white px-5">
+            <NavLink to="/login" className="text-white px-3">
+              Login
+            </NavLink>
+            <NavLink to="/contact" className="text-white px-3">
               Contact Us
             </NavLink>
           </Nav>

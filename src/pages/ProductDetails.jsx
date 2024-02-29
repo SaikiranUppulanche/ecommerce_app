@@ -48,7 +48,6 @@ const productsArr = [
 const ProductDetails = () => {
   const [quantity, setQuantity] = useState("1");
   const { id } = useParams();
-  console.log(id);
 
   const currentProductIndex = productsArr.findIndex((item) => +item.id === +id);
   const currentProduct = { ...productsArr[currentProductIndex] };
