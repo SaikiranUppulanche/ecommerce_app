@@ -1,4 +1,8 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  useNavigate,
+} from "react-router-dom";
 
 import AboutPage from "./pages/About";
 import HomePage from "./pages/Home";
@@ -8,8 +12,23 @@ import ContactPage from "./pages/ContactPage";
 import Products from "./pages/Products";
 import ProductDetails from "./pages/ProductDetails";
 import Login from "./pages/Login";
+import { useContext, useEffect } from "react";
+import { userAuthContext } from "./context/userAuthContext";
 
-const router = createBrowserRouter([
+const AuthenticatedRoutes = ({ element }) => {
+  const { isLoggedIn } = useContext(userAuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
+  }, [isLoggedIn, navigate]);
+
+  return isLoggedIn ? element : null;
+};
+
+const routes = [
   {
     path: "/",
     element: <RootLayout />,
@@ -24,7 +43,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/store",
-        element: <Store />,
+        element: <AuthenticatedRoutes element={<Store />} />,
         children: [
           { index: true, element: <Products /> },
           { path: "/store/:id", element: <ProductDetails /> },
@@ -40,7 +59,9 @@ const router = createBrowserRouter([
       },
     ],
   },
-]);
+];
+
+const router = createBrowserRouter(routes);
 
 function App() {
   return <RouterProvider router={router} />;

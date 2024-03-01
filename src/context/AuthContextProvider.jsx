@@ -9,7 +9,6 @@ const AuthContextProvider = (props) => {
 
   const handleAddToken = (token) => {
     setAuthToken(token);
-
     localStorage.setItem("token", `${token}`);
   };
 
