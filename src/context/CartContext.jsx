@@ -1,81 +1,148 @@
-import React, { useState } from "react";
-
-const cartElements = [
-  {
-    title: "Colors",
-
-    price: 100,
-
-    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%201.png",
-
-    quantity: 2,
-  },
-
-  {
-    title: "Black and white Colors",
-
-    price: 50,
-
-    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%202.png",
-
-    quantity: 3,
-  },
-
-  {
-    title: "Yellow and Black Colors",
-
-    price: 70,
-
-    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%203.png",
-
-    quantity: 1,
-  },
-];
+import React, { useContext, useEffect, useState } from "react";
+import { userAuthContext } from "./userAuthContext";
+import Loader from "../UI/Loader";
 
 export const CartContext = React.createContext({
-  cartItem: [...cartElements],
+  cartItem: [],
   onAddToCart: () => {},
-  //   onDeleteFromCart: () => {},
+  onDeleteFromCart: () => {},
 });
 
 const CartContextProvider = (props) => {
+  const authCtx = useContext(userAuthContext);
+  const email = authCtx.email;
+
   const [cartItem, setCartItem] = useState([]);
+  const [loader, setLoader] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("email")) {
+      fetch(
+        `https://react-auth-3257e-default-rtdb.firebaseio.com/${email}.json`
+      )
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          const dataArr = [];
+
+          for (let key in data) {
+            const product = {
+              id: key,
+              ...data[key],
+            };
+            dataArr.push(product);
+          }
+          setCartItem(dataArr);
+        });
+    } else {
+      setCartItem([]);
+    }
+  }, [email, setCartItem]);
 
   const handleAddToCart = (product) => {
     const itemIndex = cartItem.findIndex(
-      (item) =>
-        item.title.toLowerCase().trim() === product.title.toLowerCase().trim()
+      (item) => item.productId === product.id
     );
+    setLoader(true);
+
     if (itemIndex === -1) {
       const newProduct = {
         ...product,
+        productId: product.id,
         quantity: 1,
       };
-      setCartItem((prev) => [...prev, newProduct]);
+      const sendingNewProduct = { ...newProduct };
+      delete sendingNewProduct.id;
+
+      fetch(
+        `https://react-auth-3257e-default-rtdb.firebaseio.com/${email}.json`,
+        {
+          method: "POST",
+          body: JSON.stringify(sendingNewProduct),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          } else {
+            throw new Error("Failed to add Product");
+          }
+        })
+        .then((data) => {
+          const id = data.name;
+          setCartItem((prev) => [...prev, { ...newProduct, id }]);
+        })
+        .catch((err) => {
+          alert(err.message);
+        })
+        .finally(() => {
+          setLoader(false);
+        });
     } else {
       const currentItem = { ...cartItem[itemIndex] };
       const updatedItem = {
         ...currentItem,
         quantity: parseInt(currentItem.quantity) + 1,
       };
+
       const newCartItem = [...cartItem];
       newCartItem[itemIndex] = updatedItem;
-      setCartItem(newCartItem);
+
+      const sendingUpdatedItem = { ...updatedItem };
+
+      // console.log(updatedCartItemID);
+      delete sendingUpdatedItem.id;
+      fetch(
+        `https://react-auth-3257e-default-rtdb.firebaseio.com/${email}/${updatedItem.id}.json`,
+        {
+          method: "PATCH",
+          body: JSON.stringify(sendingUpdatedItem),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((res) => {
+          if (res.ok) {
+            setCartItem(newCartItem);
+            return res.json();
+          } else {
+            throw new Error("Failed to add product");
+          }
+        })
+        .catch((err) => {
+          alert(err.message);
+        })
+        .finally(() => {
+          setLoader(false);
+        });
     }
   };
 
-  //   const handleDeleteCartItem = (id) => {
-  //     const updatedList = cartItem.filter((item) => item.id !== id);
-  //     setCartItem(updatedList);
-  //   };
+  const handleDeleteCartItem = (id) => {
+    const updatedList = cartItem.filter((item) => item.id !== id);
+    fetch(
+      `https://react-auth-3257e-default-rtdb.firebaseio.com/${email}/${id}.json`,
+      {
+        method: "DELETE",
+      }
+    );
+    setCartItem(updatedList);
+  };
+
   return (
     <CartContext.Provider
       value={{
         cartItem,
         onAddToCart: handleAddToCart,
-        // onDeleteFromCart: handleDeleteCartItem,
+        onDeleteFromCart: handleDeleteCartItem,
       }}
     >
+      {loader && <Loader />}
       {props.children}
     </CartContext.Provider>
   );

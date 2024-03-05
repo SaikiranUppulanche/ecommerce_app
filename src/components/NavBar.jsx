@@ -5,13 +5,19 @@ import Navbar from "react-bootstrap/Navbar";
 import { CartContext } from "../context/CartContext";
 import { NavLink } from "react-router-dom";
 import Cart from "./Cart";
+import { userAuthContext } from "../context/userAuthContext";
 
 const NavBar = () => {
+  const cartCtx = useContext(CartContext);
+  const userAuthCtx = useContext(userAuthContext);
   const [show, setShow] = useState(false);
+
+  const onLogout = () => {
+    userAuthCtx.logout();
+  };
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const cartCtx = useContext(CartContext);
 
   const numberOfItems = cartCtx.cartItem.length;
 
@@ -36,6 +42,11 @@ const NavBar = () => {
               Contact Us
             </NavLink>
           </Nav>
+          {userAuthCtx.authToken && userAuthCtx.email && (
+            <Button variant="danger" onClick={onLogout}>
+              <h4 className="pt-1 pe-2">Logout</h4>{" "}
+            </Button>
+          )}
           <Button
             className="d-flex flex-row "
             variant="light"

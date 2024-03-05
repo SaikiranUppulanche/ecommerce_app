@@ -9,6 +9,10 @@ const Cart = ({ show, onHandleClose }) => {
     return cur.price * cur.quantity + acc;
   }, 0);
 
+  const handleRemoveProduct = (id) => {
+    cartCtx.onDeleteFromCart(id);
+  };
+
   return (
     <Card className="border border-danger">
       <Modal show={show}>
@@ -54,7 +58,12 @@ const Cart = ({ show, onHandleClose }) => {
                     value={item.quantity}
                     readOnly
                   />
-                  <Button variant="danger">Remove</Button>
+                  <Button
+                    onClick={() => handleRemoveProduct(item.id)}
+                    variant="danger"
+                  >
+                    Remove
+                  </Button>
                 </div>
               </li>
             );
