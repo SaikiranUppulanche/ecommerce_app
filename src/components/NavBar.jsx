@@ -24,7 +24,7 @@ const NavBar = () => {
   return (
     <>
       <Navbar sticky="top" expand="lg" className="bg-black">
-        <Container className="d-flex flex-row justify-content-between ">
+        <Container className="d-flex flex-row justify-content-around ">
           <Nav className="fs-3">
             <NavLink to="/" className="text-white px-3">
               Home
@@ -42,13 +42,8 @@ const NavBar = () => {
               Contact Us
             </NavLink>
           </Nav>
-          {userAuthCtx.authToken && userAuthCtx.email && (
-            <Button variant="danger" onClick={onLogout}>
-              <h4 className="pt-1 pe-2">Logout</h4>{" "}
-            </Button>
-          )}
           <Button
-            className="d-flex flex-row "
+            className="d-flex flex-row rounded-pill "
             variant="light"
             onClick={handleShow}
           >
@@ -58,6 +53,12 @@ const NavBar = () => {
             </span>
           </Button>
         </Container>
+
+        {userAuthCtx.authToken && userAuthCtx.email && (
+          <Button className="me-5" variant="danger" onClick={onLogout}>
+            <h4 className="pt-1 pe-2">Logout</h4>{" "}
+          </Button>
+        )}
       </Navbar>
       {show && <Cart show={show} onHandleClose={handleClose} />}
     </>
